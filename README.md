@@ -49,13 +49,6 @@ When you visit a webpage or open an email, the extension:
 - Microsoft Outlook (desktop application) 2016 or later
 - Internet connection (only required for initial setup and periodic domain database updates)
 
-## License Options
-
-- **Free Trial:** 14 days with full functionality
-- **Individual License:** Single user, all features
-- **Team License:** 5+ users, includes management dashboard
-- **Enterprise License:** Custom deployment options available
-
 For support, feature requests, or to report suspicious domains, please visit our GitHub repository or contact our support team.
 
 Stay secure in your daily work - let Enterprise App Protection be your first line of defense against sophisticated phishing attempts targeting business applications.
