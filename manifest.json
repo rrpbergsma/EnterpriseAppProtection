@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Enterprise App Protection",
+    "version": "1.0",
+    "description": "Protect against phishing attempts targeting enterprise applications",
+    "permissions": [
+      "activeTab",
+      "storage"
+    ],
+    "host_permissions": [
+      "https://raw.githubusercontent.com/*"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }
