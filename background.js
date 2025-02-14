@@ -1,3 +1,5 @@
+console.log("Background service worker loaded");
+
 let domainsDB = {};
 
 async function updateDomainsDB() {
@@ -5,11 +7,7 @@ async function updateDomainsDB() {
   try {
     const response = await fetch(CONFIG.DOMAINS_DB_URL);
     if (!response.ok) {
-      console.error(
-        "updateDomainsDB: Fetch failed with status",
-        response.status,
-        response.statusText
-      );
+      console.error("updateDomainsDB: Fetch failed with status", response.status, response.statusText);
       return;
     }
     domainsDB = await response.json();
@@ -19,10 +17,7 @@ async function updateDomainsDB() {
         lastUpdate: Date.now()
       },
       () => {
-        console.log(
-          "updateDomainsDB: Database updated successfully at",
-          new Date().toLocaleString()
-        );
+        console.log("updateDomainsDB: Database updated successfully at", new Date().toLocaleString());
       }
     );
   } catch (error) {
@@ -30,7 +25,11 @@ async function updateDomainsDB() {
   }
 }
 
-// Trigger update on extension startup
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("Extension installed");
+  updateDomainsDB();
+});
+
 chrome.runtime.onStartup.addListener(() => {
   console.log("onStartup: Service worker started");
   updateDomainsDB();
