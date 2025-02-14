@@ -1,5 +1,5 @@
-// Load the config so that CONFIG is defined
-importScripts("config.js");
+// background.js
+import { CONFIG } from "./config.js";
 
 console.log("Background service worker loaded");
 
@@ -38,13 +38,13 @@ chrome.runtime.onStartup.addListener(() => {
   updateDomainsDB();
 });
 
-// Periodic update based on UPDATE_INTERVAL (in hours)
+// Periodic update (every UPDATE_INTERVAL hours)
 setInterval(() => {
   console.log("Periodic update triggered");
   updateDomainsDB();
 }, CONFIG.UPDATE_INTERVAL * 3600000);
 
-// Listen for messages from the popup (e.g., "Update Now" button)
+// Listen for manual update messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("onMessage: Received message:", message);
   if (message.action === "updateDB") {
@@ -53,12 +53,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log("onMessage: Manual update completed");
       sendResponse({ status: "updated" });
     });
-    // Return true to indicate asynchronous response.
     return true;
   }
 });
 
-// Keep-alive hack for testing: force the service worker to wake frequently
+// Keep-alive hack: Use chrome.alarms to force the service worker to wake frequently (for testing only)
 chrome.alarms.create("keepAlive", { delayInMinutes: 0.1, periodInMinutes: 0.1 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "keepAlive") {
