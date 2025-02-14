@@ -43,7 +43,7 @@ setInterval(() => {
   updateDomainsDB();
 }, CONFIG.UPDATE_INTERVAL * 3600000);
 
-// Listen for manual update messages (e.g. from the popup)
+// Listen for manual update messages (e.g., from the popup)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("onMessage: Received message:", message);
   if (message.action === "updateDB") {
@@ -52,11 +52,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log("onMessage: Manual update completed");
       sendResponse({ status: "updated" });
     });
-    return true; // keep the message channel open for async response
+    return true; // keep message channel open for async response
   }
 });
 
-// (Optional) Keep-alive hack for testing purposes
+// Keep-alive hack: Use chrome.alarms to force the service worker to wake frequently (for testing)
 chrome.alarms.create("keepAlive", { delayInMinutes: 0.1, periodInMinutes: 0.1 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "keepAlive") {
