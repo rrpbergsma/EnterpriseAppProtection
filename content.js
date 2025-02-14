@@ -9,12 +9,14 @@ function analyzePageContent() {
       try {
         const url = new URL(link.href);
         const domain = url.hostname.toLowerCase();
+        // Combine the link text and its parent's text for context
         const surroundingText = ((link.innerText || "") + " " + (link.parentElement ? link.parentElement.innerText : "")).toLowerCase();
 
         for (const [appName, validDomains] of Object.entries(domainsDB)) {
           if (surroundingText.includes(appName.toLowerCase())) {
             const isValid = validDomains.some(validDomain => domain.includes(validDomain.toLowerCase()));
             if (!isValid) {
+              // Only add a warning if one hasn't been added already
               if (!link.nextElementSibling || !link.nextElementSibling.classList.contains("warning-alert")) {
                 const warning = document.createElement("div");
                 warning.classList.add("warning-alert");
@@ -34,12 +36,13 @@ function analyzePageContent() {
           }
         }
       } catch (e) {
-        // Skip links that have invalid URLs
+        // Skip links with invalid URLs
       }
     }
   });
 }
 
 document.addEventListener("DOMContentLoaded", analyzePageContent);
+
 const observer = new MutationObserver(analyzePageContent);
 observer.observe(document.body, { childList: true, subtree: true });
