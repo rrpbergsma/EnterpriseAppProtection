@@ -13,7 +13,7 @@ async function updateDomainsDB() {
     domainsDB = await response.json();
     chrome.storage.local.set(
       {
-        domainsDB,
+        domainsDB: domainsDB,
         lastUpdate: Date.now()
       },
       () => {
@@ -25,23 +25,24 @@ async function updateDomainsDB() {
   }
 }
 
+// Update on extension installation and startup
 chrome.runtime.onInstalled.addListener(() => {
   console.log("Extension installed");
   updateDomainsDB();
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  console.log("onStartup: Service worker started");
+  console.log("Service worker started");
   updateDomainsDB();
 });
 
-// Periodic update based on UPDATE_INTERVAL (in hours)
+// Periodic update (every UPDATE_INTERVAL hours)
 setInterval(() => {
   console.log("Periodic update triggered");
   updateDomainsDB();
 }, CONFIG.UPDATE_INTERVAL * 3600000);
 
-// Listen for messages from the popup (e.g., "Update Now" button)
+// Listen for manual update messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("onMessage: Received message:", message);
   if (message.action === "updateDB") {
@@ -55,7 +56,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// Keep-alive hack: Use chrome.alarms to force the service worker to wake frequently (for testing only)
+// (Optional) Keep-alive hack for testing: force the service worker to wake frequently.
 chrome.alarms.create("keepAlive", { delayInMinutes: 0.1, periodInMinutes: 0.1 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "keepAlive") {
