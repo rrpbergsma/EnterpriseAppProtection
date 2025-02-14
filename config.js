@@ -1,6 +1,6 @@
 const CONFIG = {
     // GitHub raw content URL for the domains database
-    DOMAINS_DB_URL: 'https://raw.githubusercontent.com/your-org/domain-db/main/domains.json',
+    DOMAINS_DB_URL: 'https://raw.githubusercontent.com/rrpbergsma/EnterpriseAppProtection/refs/heads/main/domains.json',
     // How often to update the domains database (in hours)
     UPDATE_INTERVAL: 24,
     // Default warning message template
