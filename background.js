@@ -50,7 +50,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log("onMessage: Manual update completed");
       sendResponse({ status: "updated" });
     });
-    // Return true to indicate asynchronous response.
+    // Return true to indicate asynchronous response
     return true;
+  }
+});
+
+// Keep-alive hack: Use chrome.alarms to force the service worker to wake frequently (for testing only)
+chrome.alarms.create("keepAlive", { delayInMinutes: 0.1, periodInMinutes: 0.1 });
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "keepAlive") {
+    console.log("keepAlive alarm triggered, service worker is active");
+    self.clients.matchAll().then((clients) => {
+      console.log("Number of active clients:", clients.length);
+    });
   }
 });
