@@ -5,7 +5,8 @@
   "description": "Warns when enterprise tool mentions are linked to non-official sites",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "alarms"
   ],
   "host_permissions": [
     "https://raw.githubusercontent.com/*"
