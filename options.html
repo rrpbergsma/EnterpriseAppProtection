@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise App Protection - Settings</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { font-size: 20px; }
+        textarea { width: 100%; height: 100px; margin-bottom: 10px; }
+        button { padding: 8px 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Enterprise App Protection - Settings</h1>
+    
+    <h3>✅ Trusted Domains (Safe List)</h3>
+    <textarea id="trusted"></textarea>
+
+    <h3>❌ Blocked Domains (Unsafe List)</h3>
+    <textarea id="blocked"></textarea>
+
+    <button id="save">💾 Save Settings</button>
+
+    <script src="options.js"></script>
+</body>
+</html>
