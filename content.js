@@ -1,6 +1,6 @@
 // content.js
 
-const SAFE_BROWSING_API_KEY = "AIzaSyCb3oy3jp7rtYPshXGyBb5I1-zHAhNm7No"; // Replace with your actual API key
+let SAFE_BROWSING_API_KEY = ""; // Initialize with an empty string
 
 // ✅ Store domain data globally to prevent async issues
 let domainsDB = {};
@@ -39,6 +39,11 @@ function isValidDomain(domain, validDomains, trustedDomains) {
 // ✅ Check Google Safe Browsing API for dangerous links
 async function checkGoogleSafeBrowsing(url) {
   console.log("🔍 Checking Google Safe Browsing for:", url);
+
+  if (!SAFE_BROWSING_API_KEY) {
+      console.warn("⚠️ API key is not set. Skipping Safe Browsing check.");
+      return false;
+  }
 
   const response = await fetch(`https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${SAFE_BROWSING_API_KEY}`, {
       method: "POST",
@@ -161,10 +166,12 @@ function analyzePageContent() {
 
 // ✅ Load domains and start analysis once ready
 function loadDomainsAndAnalyze() {
-    chrome.storage.local.get(["domainsDB", "trustedDomains", "blockedDomains"], function (result) {
+    chrome.storage.local.get(["domainsDB", "trustedDomains", "blockedDomains", "safeBrowsingApiKey"], function (result) {
         domainsDB = result.domainsDB || {};
         trustedDomains = result.trustedDomains || [];
         blockedDomains = result.blockedDomains || [];
+        SAFE_BROWSING_API_KEY = result.safeBrowsingApiKey || "";
+        console.log("✅ Loaded API Key:", SAFE_BROWSING_API_KEY); // Debugging line
         isDomainsLoaded = true;
         console.log("✅ Domains database loaded:", domainsDB);
         analyzePageContent(); // Run scan after loading
