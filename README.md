@@ -110,9 +110,16 @@ If Google **does not recognize a site as unsafe**, it will not be flagged unless
 
 ---
 
-## 🏆 Credits
+## Screenshots
 
-Developed with 💙 to protect businesses from phishing threats!  
-Stay secure in your daily work—let **Enterprise App Protection** be your first line of defense against phishing attacks.
+### 🔧 Settings Page
+The settings page allows users to configure the Google Safe Browsing API key and manage trusted and blocked domains. Users can enter domains manually to whitelist or blacklist specific sites.
+
+![Settings Page](https://raw.githubusercontent.com/rrpbergsma/EnterpriseAppProtection/refs/heads/main/SettingPage.png)
+
+### ⚠️ Extension Popup
+The extension popup provides real-time feedback when navigating websites. If a domain is flagged as unsafe, the user receives an alert, helping to prevent phishing and malicious activity.
+
+![Extension Popup](https://raw.githubusercontent.com/rrpbergsma/EnterpriseAppProtection/refs/heads/main/ExtensionPopup.png)
 
 ---
