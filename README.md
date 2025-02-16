@@ -12,6 +12,8 @@ Protect yourself and your organization from phishing attacks that impersonate co
 - ✓ **Works with 150+ enterprise applications**
 - ✓ **Functions completely offline** after initial setup (except for Safe Browsing checks)
 
+![Enterprise App Protection Screenshot](https://raw.githubusercontent.com/rrpbergsma/repository/main/EnterpriseAppProtection.png)
+
 ---
 
 ## ⚙️ How It Works
