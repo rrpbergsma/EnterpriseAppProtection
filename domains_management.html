@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise App Protection - Settings</title>
+    <title>Enterprise App Protection - Domain Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,28 +41,16 @@
             color: #666;
         }
 
-        input, textarea {
+        textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
-            box-sizing: border-box; /* Ensures padding is included in width */
-        }
-
-        textarea {
             height: 120px;
             resize: vertical;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
+            box-sizing: border-box;
         }
 
         pre {
@@ -107,35 +95,33 @@ input, textarea {
 </head>
 <body>
     <div class="container">
-        <h1>Enterprise App Protection - Settings</h1>
+        <h1>Enterprise App Protection - Domain Management</h1>
 
-        <h3>🔑 Google Safe Browsing API Key</h3>
-        <p>
-            To use Google Safe Browsing, you need an API key. 
-            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">
-                Click here to create a key
-            </a> (you may need to enable the Safe Browsing API in Google Cloud Console).
-        </p>
-        <input type="text" id="apiKey" placeholder="Enter your API key here" />
+        <h3>✅ How to Use</h3>
+        <ul>
+            <li>✅ Enter <strong>one domain per line</strong> (no commas or spaces).</li>
+            <li>✅ <strong>Do not include</strong> <code>https://</code> or <code>www.</code> (only enter the domain name).</li>
+            <li>✅ You can add subdomains if needed (e.g., <code>sub.example.com</code>).</li>
+            <li>✅ <strong>Trusted Domains:</strong> These sites will <u>not</u> be flagged as unsafe.</li>
+            <li>✅ <strong>Blocked Domains:</strong> These sites will <u>always</u> be flagged, even if Google Safe Browsing does not detect them.</li>
+            <li>🚨 <strong>Example Entries:</strong></li>
+        </ul>
+        <pre>
+    example.com
+    secure-site.org
+    sub.example.com
+    malicious-site.net
+        </pre>
 
-        <h3>🌐 Domains Database URL</h3>
-        <p>Enter the URL for the domains database (JSON format):</p>
-        <input type="text" id="domainsDBURL" placeholder="Enter the URL here" value="https://raw.githubusercontent.com/rrpbergsma/EnterpriseAppProtection/refs/heads/main/domains.json" />
+        <h3>✅ Trusted Domains (Safe List)</h3>
+        <textarea id="trusted" placeholder="Enter trusted domains here..."></textarea>
 
-        <h3>⏱️ Update Interval (hours)</h3>
-        <p>Enter the interval (in hours) to check for updates to the domains database:</p>
-        <input type="number" id="updateInterval" placeholder="Enter the update interval here" value="24" />
-
-        <h3>⚠️ Warning Message Template</h3>
-        <p>Enter the template for the warning message (use <code>{app}</code> to represent the application name):</p>
-        <input type="text" id="warningTemplate" placeholder="Enter the warning message template here" value="Warning: This link claims to be {app} but goes to an unofficial domain." />
-
+        <h3>❌ Blocked Domains (Unsafe List)</h3>
+        <textarea id="blocked" placeholder="Enter blocked domains here..."></textarea>
 
         <div class="button-container">
-            <button id="save">💾 Save Settings</button>
+            <button id="save">💾 Save Domains</button>
         </div>
     </div>
-
-    <script src="options.js"></script>
 </body>
 </html>

@@ -33,6 +33,11 @@ document.getElementById("updateDB").addEventListener("click", () => {
   });
 });
 
+// Open the domains management page when the "Manage Domains" button is clicked
+document.getElementById("manageDomains").addEventListener("click", function () {
+  chrome.tabs.create({ url: chrome.runtime.getURL("domains_management.html") });
+});
+
 // Load total suspicious links count and update UI
 chrome.storage.local.get(["totalSuspiciousLinks"], function (result) {
   document.getElementById("suspiciousCount").innerText = result.totalSuspiciousLinks || 0;

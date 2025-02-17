@@ -1,30 +1,30 @@
 // background.js
 
-// Load configuration so that CONFIG is defined
-importScripts("config.js");
-
 console.log("Background service worker loaded");
 
 let domainsDB = {};
 
 async function updateDomainsDB() {
-  console.log("updateDomainsDB: Starting update from URL:", CONFIG.DOMAINS_DB_URL);
-  try {
-    const response = await fetch(CONFIG.DOMAINS_DB_URL);
-    if (!response.ok) {
-      console.error("updateDomainsDB: Fetch failed with status", response.status, response.statusText);
-      return;
+  chrome.storage.local.get(["domainsDBURL"], async function (result) {
+    const domainsDBURL = result.domainsDBURL || "https://raw.githubusercontent.com/rrpbergsma/EnterpriseAppProtection/refs/heads/main/domains.json";
+    console.log("updateDomainsDB: Starting update from URL:", domainsDBURL);
+    try {
+      const response = await fetch(domainsDBURL);
+      if (!response.ok) {
+        console.error("updateDomainsDB: Fetch failed with status", response.status, response.statusText);
+        return;
+      }
+      domainsDB = await response.json();
+      chrome.storage.local.set({
+        domainsDB: domainsDB,
+        lastUpdate: Date.now()
+      }, () => {
+        console.log("updateDomainsDB: Database updated successfully at", new Date().toLocaleString());
+      });
+    } catch (error) {
+      console.error("updateDomainsDB: Failed to update domains database:", error);
     }
-    domainsDB = await response.json();
-    chrome.storage.local.set({
-      domainsDB: domainsDB,
-      lastUpdate: Date.now()
-    }, () => {
-      console.log("updateDomainsDB: Database updated successfully at", new Date().toLocaleString());
-    });
-  } catch (error) {
-    console.error("updateDomainsDB: Failed to update domains database:", error);
-  }
+  });
 }
 
 // Run updates when the extension is installed or started
@@ -40,9 +40,12 @@ chrome.runtime.onStartup.addListener(() => {
 
 // Periodic update based on UPDATE_INTERVAL (in hours)
 setInterval(() => {
-  console.log("Periodic update triggered");
-  updateDomainsDB();
-}, CONFIG.UPDATE_INTERVAL * 3600000);
+  chrome.storage.local.get(["updateInterval"], function (result) {
+    const updateInterval = result.updateInterval || 24;
+    console.log("Periodic update triggered");
+    updateDomainsDB();
+  });
+}, 3600000);
 
 // Listen for manual update messages (e.g., from the popup)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

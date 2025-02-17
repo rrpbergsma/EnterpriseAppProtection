@@ -1,12 +1,11 @@
 // content.js
 
-let SAFE_BROWSING_API_KEY = ""; // Initialize with an empty string
-
-// ✅ Store domain data globally to prevent async issues
+let SAFE_BROWSING_API_KEY = "";
 let domainsDB = {};
 let trustedDomains = [];
 let blockedDomains = [];
-let isDomainsLoaded = false; // ✅ Prevent analysis before data is ready
+let warningTemplate = "Warning: This link claims to be {app} but goes to an unofficial domain.";
+let isDomainsLoaded = false;
 
 // ✅ Get the top-level domain (TLD)
 function getTopLevelDomain(hostname) {
@@ -127,7 +126,7 @@ function analyzePageContent() {
                       font-size: 14px;
                   `;
 
-                  warning.textContent = `⚠️ This link claims to be ${matchedApp} but goes to an unofficial domain.`;
+                  warning.textContent = `⚠️ ${warningTemplate.replace("{app}", matchedApp)}`;
                   warning.setAttribute("title", `This link goes to ${domain} instead of an official ${matchedApp} domain.`);
                   link.parentElement.insertBefore(warning, link.nextSibling);
 
@@ -166,15 +165,16 @@ function analyzePageContent() {
 
 // ✅ Load domains and start analysis once ready
 function loadDomainsAndAnalyze() {
-    chrome.storage.local.get(["domainsDB", "trustedDomains", "blockedDomains", "safeBrowsingApiKey"], function (result) {
+    chrome.storage.local.get(["domainsDB", "trustedDomains", "blockedDomains", "safeBrowsingApiKey", "warningTemplate"], function (result) {
         domainsDB = result.domainsDB || {};
         trustedDomains = result.trustedDomains || [];
         blockedDomains = result.blockedDomains || [];
         SAFE_BROWSING_API_KEY = result.safeBrowsingApiKey || "";
-        console.log("✅ Loaded API Key:", SAFE_BROWSING_API_KEY); // Debugging line
+        warningTemplate = result.warningTemplate || "Warning: This link claims to be {app} but goes to an unofficial domain.";
+        console.log("✅ Loaded API Key:", SAFE_BROWSING_API_KEY);
         isDomainsLoaded = true;
         console.log("✅ Domains database loaded:", domainsDB);
-        analyzePageContent(); // Run scan after loading
+        analyzePageContent();
     });
 }
 
