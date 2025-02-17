@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,38 +81,104 @@
         button:hover {
             background-color: #0056b3;
         }
-        /* Style the placeholder text to make it look distinct from user input */
-input::placeholder, textarea::placeholder {
-    color: #aaa; /* Lighter gray color */
-    font-style: italic; /* Makes it look like a hint */
-    opacity: 1; /* Ensures it's fully visible */
-}
 
-/* Ensure actual input text is clear */
-input, textarea {
-    color: #333; /* Dark text for actual input */
-}
+        /* Styled Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            text-align: center;
+        }
+
+        .popup-content {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .popup button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        /* Style the placeholder text to make it look distinct from user input */
+        input::placeholder,
+        textarea::placeholder {
+            color: #aaa;
+            /* Lighter gray color */
+            font-style: italic;
+            /* Makes it look like a hint */
+            opacity: 1;
+            /* Ensures it's fully visible */
+        }
+
+        /* Ensure actual input text is clear */
+        input,
+        textarea {
+            color: #333;
+            /* Dark text for actual input */
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            overflow-x: auto;
+            font-style: italic;
+            color: #333;
+            /* Make text italic */
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Enterprise App Protection - Domain Management</h1>
 
+        <!-- Restored Instructions -->
         <h3>✅ How to Use</h3>
         <ul>
             <li>✅ Enter <strong>one domain per line</strong> (no commas or spaces).</li>
-            <li>✅ <strong>Do not include</strong> <code>https://</code> or <code>www.</code> (only enter the domain name).</li>
+            <li>✅ <strong>Do not include</strong> <code>https://</code> or <code>www.</code> (only enter the domain
+                name).</li>
             <li>✅ You can add subdomains if needed (e.g., <code>sub.example.com</code>).</li>
             <li>✅ <strong>Trusted Domains:</strong> These sites will <u>not</u> be flagged as unsafe.</li>
-            <li>✅ <strong>Blocked Domains:</strong> These sites will <u>always</u> be flagged, even if Google Safe Browsing does not detect them.</li>
+            <li>✅ <strong>Blocked Domains:</strong> These sites will <u>always</u> be flagged, even if Google Safe
+                Browsing does not detect them.</li>
             <li>🚨 <strong>Example Entries:</strong></li>
         </ul>
-        <pre>
+        <pre><em>
     example.com
     secure-site.org
     sub.example.com
     malicious-site.net
-        </pre>
+        </em></pre>
 
         <h3>✅ Trusted Domains (Safe List)</h3>
         <textarea id="trusted" placeholder="Enter trusted domains here..."></textarea>
@@ -123,5 +190,16 @@ input, textarea {
             <button id="save">💾 Save Domains</button>
         </div>
     </div>
+
+    <!-- Styled Popup -->
+    <div id="popupMessage" class="popup hidden">
+        <div class="popup-content">
+            <p id="popupText">Changes saved successfully!</p>
+            <button id="popupClose">OK</button>
+        </div>
+    </div>
+
+    <script src="domains_management.js"></script>
 </body>
+
 </html>

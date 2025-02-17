@@ -1,18 +1,39 @@
-// domains_management.js
+document.addEventListener("DOMContentLoaded", function () {
+    const saveButton = document.getElementById("save");
+    const trustedInput = document.getElementById("trusted");
+    const blockedInput = document.getElementById("blocked");
 
-document.getElementById("saveDomains").addEventListener("click", function () {
-    // Show confirmation popup
-    const userConfirmed = confirm("Are you sure you want to save these changes?");
-    
-    if (userConfirmed) {
-        // Retrieve the updated domains list from the input field (or another source)
-        const domains = document.getElementById("domainList").value.split("\n").map(domain => domain.trim()).filter(domain => domain);
+    // Load saved domains
+    chrome.storage.local.get(["trustedDomains", "blockedDomains"], function (data) {
+        if (data.trustedDomains) trustedInput.value = data.trustedDomains.join("\n");
+        if (data.blockedDomains) blockedInput.value = data.blockedDomains.join("\n");
+    });
 
-        // Save the updated domains to Chrome storage
-        chrome.storage.local.set({ allowedDomains: domains }, function () {
-            alert("✅ Changes saved successfully!");
+    // Save button event
+    saveButton.addEventListener("click", function () {
+        // Retrieve domains from input fields
+        const trustedDomains = trustedInput.value.split("\n").map(d => d.trim()).filter(d => d);
+        const blockedDomains = blockedInput.value.split("\n").map(d => d.trim()).filter(d => d);
+
+        // Save to Chrome storage
+        chrome.storage.local.set({ trustedDomains, blockedDomains }, function () {
+            showPopup("✅ Changes saved successfully!");
         });
-    } else {
-        alert("❌ Changes were not saved.");
+    });
+
+    // Function to show styled popup message
+    function showPopup(message) {
+        const popup = document.getElementById("popupMessage");
+        const popupText = document.getElementById("popupText");
+        const popupClose = document.getElementById("popupClose");
+
+        popupText.innerText = message;
+        popup.classList.remove("hidden");
+        popup.classList.add("visible");
+
+        popupClose.addEventListener("click", function () {
+            popup.classList.remove("visible");
+            popup.classList.add("hidden");
+        });
     }
 });
